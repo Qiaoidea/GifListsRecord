@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.MainActivity">
+    <item
+        android:id="@+id/action_decoder"
+        android:orderInCategory="100"
+        android:title="GifByDecoder"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_movie0"
+        android:orderInCategory="100"
+        android:title="GifByMovie0"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_movie1"
+        android:orderInCategory="100"
+        android:title="GifByMovie1"
+        app:showAsAction="never" />
+</menu>

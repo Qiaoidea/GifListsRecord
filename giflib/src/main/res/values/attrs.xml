@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<declare-styleable name="gifView">
+		<!--图片来源-->
+		<attr name="src" format="integer" />
+
+		<!-- 播放延迟 -->
+		<attr name="delay" format="integer" />
+
+		<!-- 设置是否停止  -->
+		<attr name="stop" format="boolean" />
+	</declare-styleable>
+
+	<declare-styleable name="GifView">
+		<attr name="gif" format="reference" />
+		<attr name="paused" format="boolean" />
+	</declare-styleable>
+
+	<declare-styleable name="CustomTheme">
+		<attr name="gifViewStyle" format="reference" />
+	</declare-styleable>
+
+	<style name="Widget.GifView" parent="@android:style/Widget"></style>
+</resources>
+
