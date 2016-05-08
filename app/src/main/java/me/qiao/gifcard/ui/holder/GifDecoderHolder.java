@@ -1,13 +1,13 @@
 package me.qiao.gifcard.ui.holder;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import java.io.File;
 import java.io.IOException;
 
-import me.qiao.gifcard.R;
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -31,7 +31,8 @@ public class GifDecoderHolder extends QViewHolder<File> {
     @Override
     public void bindViewHolder(File data) {
         super.bindViewHolder(data);
-        ((ImageView)itemView).setImageResource(R.mipmap.ic_launcher);
+//        ((ImageView)itemView).setImageResource(R.mipmap.ic_launcher);
+        ((ImageView)itemView).setImageBitmap(BitmapFactory.decodeFile(data.getAbsolutePath()));
     }
 
     @Override

@@ -57,6 +57,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bundle.putInt("type",1);
         }else if(id == R.id.action_movie1){
             bundle.putInt("type",2);
+        }else if(id == R.id.action_decoder0){
+            bundle.putInt("type",3);
+        }else if(id == R.id.action_decoder1){
+            bundle.putInt("type",4);
+        }else if(id == R.id.action_decoder2){
+            bundle.putInt("type",5);
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.addToBackStack(null);

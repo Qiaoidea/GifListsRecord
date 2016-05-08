@@ -13,9 +13,9 @@ import me.qiao.giflib.decoder.drawable.GifAnimationDrawable;
  * Created by Qiao on 2016/5/5.
  * function：
  */
-public class ImageHolder extends QViewHolder<File> {
+public class GifDecoderDrawableHolder extends QViewHolder<File> {
 
-    public ImageHolder(Context context) {
+    public GifDecoderDrawableHolder(Context context) {
         super(new ImageView(context));
         ImageView imageView = (ImageView)itemView;
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);

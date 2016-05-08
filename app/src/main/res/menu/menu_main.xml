@@ -19,4 +19,23 @@
         android:orderInCategory="100"
         android:title="GifByMovie1"
         app:showAsAction="never" />
+
+    <!--<item-->
+        <!--android:id="@+id/action_decoder0"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="GifByDecoder0"-->
+        <!--app:showAsAction="never" />-->
+
+    <!--<item-->
+        <!--android:id="@+id/action_decoder1"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="GifByDecoder1"-->
+        <!--app:showAsAction="never" />-->
+
+    <!--<item-->
+        <!--android:id="@+id/action_decoder2"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="GifByDecoder2"-->
+        <!--app:showAsAction="never" />-->
+
 </menu>

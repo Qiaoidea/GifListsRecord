@@ -8,6 +8,10 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import me.qiao.giflib.R;
 
 public class TypegifView extends View implements Runnable {
@@ -67,6 +71,16 @@ public class TypegifView extends View implements Runnable {
 
 		Thread updateTimer = new Thread(this);
 		updateTimer.start();
+	}
+
+	public void setFile(File file){
+		gHelper = new gifOpenHelper();
+		try {
+			gHelper.read(new FileInputStream(file));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			bmp = gHelper.getImage();// 得到第一张图片
+		}
 	}
 
 	/**

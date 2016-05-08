@@ -5,17 +5,17 @@ import android.support.v7.widget.RecyclerView;
 
 import java.io.File;
 
-import me.qiao.giflib.movie.lib0.GifView;
+import me.qiao.giflib.decoder.lib0.TypegifView;
 
 /**
  * Created by Qiao on 2016/5/5.
  * function：
  */
-public class GifMovie0Holder extends QViewHolder<File>{
+public class GifDecoder0Holder extends QViewHolder<File>{
 
-    public GifMovie0Holder(Context context) {
-        super(new GifView(context));
-        GifView imageView = (GifView)itemView;
+    public GifDecoder0Holder(Context context) {
+        super(new TypegifView(context));
+        TypegifView imageView = (TypegifView)itemView;
         imageView.setMinimumHeight(400);
         RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(
                 RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
@@ -30,6 +30,6 @@ public class GifMovie0Holder extends QViewHolder<File>{
     @Override
     public void bindData() {
         super.bindData();
-        ((GifView)itemView).setMovieFile(mData);
+        ((TypegifView)itemView).setFile(mData);
     }
 }

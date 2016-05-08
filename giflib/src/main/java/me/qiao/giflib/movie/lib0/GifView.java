@@ -10,6 +10,9 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import me.qiao.giflib.R;
@@ -89,6 +92,14 @@ public class GifView extends View {
         this.mMovieResourceId = movieResId;
         mMovie = Movie.decodeStream(getResources().openRawResource(mMovieResourceId));
         requestLayout();
+    }
+
+    public void setMovieFile(File file){
+        try {
+            setMovieStream(new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setMovieStream(InputStream stream){

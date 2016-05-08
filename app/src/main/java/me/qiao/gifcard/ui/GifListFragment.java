@@ -16,9 +16,12 @@ import android.view.ViewTreeObserver;
 import java.io.File;
 
 import me.qiao.gifcard.api.GifDataApi;
+import me.qiao.gifcard.ui.holder.GifDecoder0Holder;
+import me.qiao.gifcard.ui.holder.GifDecoder1Holder;
+import me.qiao.gifcard.ui.holder.GifDecoder2Holder;
+import me.qiao.gifcard.ui.holder.GifDecoderDrawableHolder;
 import me.qiao.gifcard.ui.holder.GifDecoderHolder;
 import me.qiao.gifcard.ui.holder.GifMovie0Holder;
-import me.qiao.gifcard.ui.holder.ImageHolder;
 import me.qiao.gifcard.ui.holder.GifMovie1Holder;
 import me.qiao.gifcard.ui.holder.QViewHolder;
 
@@ -62,8 +65,14 @@ public class GifListFragment extends Fragment{
                         return new GifMovie0Holder(getContext());
                     case 2:
                         return new GifMovie1Holder(getContext());
+                    case 3:
+                        return new GifDecoder0Holder(getContext());
+                    case 4:
+                        return new GifDecoder1Holder(getContext());
+                    case 5:
+                        return new GifDecoder2Holder(getContext());
                     default:
-                        return new ImageHolder(getContext());
+                        return new GifDecoderDrawableHolder(getContext());
                 }
             }
 

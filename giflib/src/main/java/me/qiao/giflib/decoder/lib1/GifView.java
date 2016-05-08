@@ -12,6 +12,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
@@ -93,6 +96,14 @@ public class GifView extends View implements GifAction{
     	gifDecoder = new GifDecoder(gif,this);
     	gifDecoder.start();
     }
+
+	public void setGifFile(File file){
+		try {
+			setGifDecoderImage(new FileInputStream(file));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
     
     /**
      * 设置图片，开始解码

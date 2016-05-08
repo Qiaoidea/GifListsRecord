@@ -82,12 +82,7 @@ public class MovieImageView extends ImageView {
 	}
 
 	public void setGifFile(File file){
-		try {
-			final InputStream stream = new FileInputStream(file);
-			setMovie(Movie.decodeStream(stream));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		setMovie(Movie.decodeFile(file.getAbsolutePath()));
 	}
 
 	/**
