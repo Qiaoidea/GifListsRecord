@@ -1,5 +1,7 @@
 ## ImageView 显示gif动图
 
+..to be continue  示例demo优化，展示，更详细的对比
+
 　　由于Android官方的ImageView目前展示图片不支持动图Gif，这里做了一些分析和查找，列出部分实现播放gif的方案，加以比对并形成记录。
 
 ### GIF文件格式
@@ -32,7 +34,8 @@
 　　示例demo 以RecyclerView 作为容器分别展示list列表和grid列表样式展示20余gif动图效果后，当前页面gif图全部播放稳定后，捕获到相关数据如下：
 
 ![Nativie 解码](raw/Decoder.png)
-![Movie 绘制canvas](raw/Movie/png)
+![Movie 绘制canvas](raw/Movie.png)
+
 　　从图中可以看到，在内存占用 、CPU消耗 以及 GPU绘制性能上，Decode解码相较Movie绘制都有明显优势。而且从用户体验方面来看，滑动流畅度上Native解码也优于Movie.
 
 #### 2.引用成本
