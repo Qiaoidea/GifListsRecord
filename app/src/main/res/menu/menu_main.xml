@@ -2,10 +2,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.MainActivity">
+
+    <item
+        android:id="@+id/action_glide"
+        android:orderInCategory="100"
+        android:title="GifByGlideDecoder"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/action_decoder"
         android:orderInCategory="100"
         android:title="GifByDecoder"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_movie1"
+        android:orderInCategory="100"
+        android:title="GifByMovie1"
         app:showAsAction="never" />
 
     <item
@@ -15,27 +28,27 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_movie1"
+        android:id="@+id/action_decoder0"
         android:orderInCategory="100"
-        android:title="GifByMovie1"
+        android:title="GifByDecoder0"
         app:showAsAction="never" />
 
-    <!--<item-->
-        <!--android:id="@+id/action_decoder0"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="GifByDecoder0"-->
-        <!--app:showAsAction="never" />-->
+    <item
+        android:id="@+id/action_decoder1"
+        android:orderInCategory="100"
+        android:title="GifByDecoder1"
+        app:showAsAction="never" />
 
-    <!--<item-->
-        <!--android:id="@+id/action_decoder1"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="GifByDecoder1"-->
-        <!--app:showAsAction="never" />-->
+    <item
+        android:id="@+id/action_animdrawable_decoder"
+        android:orderInCategory="100"
+        android:title="GifByAnimDrawableDecoder"
+        app:showAsAction="never" />
 
-    <!--<item-->
-        <!--android:id="@+id/action_decoder2"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="GifByDecoder2"-->
-        <!--app:showAsAction="never" />-->
+    <item
+        android:id="@+id/action_decoder2"
+        android:orderInCategory="100"
+        android:title="GifByDecoder2"
+        app:showAsAction="never" />
 
 </menu>

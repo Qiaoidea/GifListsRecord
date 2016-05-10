@@ -14,17 +14,24 @@
 - 利用系统提供的Movie类
 
 #### 1.格式解码
-　　通过解析gif文件头(Header)和和每一帧(Frame)对应的像素色彩等数据来生成对应的Bitmap，主要分为Java Decode和Native Decode两种途径。其中使用Java来解码相对效率会低一些，尤其是在多图或者大图（图像有多帧）的情况下更为明显。
+　　通过解析gif文件头(Header)和和每一帧(Frame)对应的像素色彩等数据来生成对应的Bitmap，主要分为Java Decode和Native Decode两种途径。
 
 - [Java实现][4]  参考方案 [Glide图片加载库][5]
+
+  ![GildeDecoderUML](![类图](raw/GlideDecoderUML.png))
+
 - [Native实现][6] 开源方案 [android-gif-drawable][9]
+
+  ![类图](raw/GifDecoderUML.png)
 
 #### 2.系统Movie类
 　　通过系统Movie类的Nativie方法解码数据流，设定指定时间时间点利用movie_draw绘制bitmap到canvas上。
+[使用Movie实现方案][10]
+
+　　![类图](raw/GifMovieUML.png)
 - [Java源码][8]
 - [Native C源码][7]
 
-[使用Movie实现方案][10]
 
 ### 方案比对
 　　由于使用场景为多动态图列表展示gif，结合项目需要。这里从``性能``、``库引用成本``和``局限性``等几方面综合比对。
@@ -46,7 +53,7 @@
 
 #### 3.局限性
 　　因为Movie.draw方法不支持硬件加速（详见：[API levels](raw/hardware.png)），在某些设备不关闭硬件加速情况下会出现问题，比如华为手机不能显示，nexus 7才出现崩溃等。而关闭硬件加速，对于绘制性能和效率会有一定影响。
-另外，从兼容性考虑，使用影响最小的View层级关闭硬件加速的话，就需要使用自定义View，跟可以支持使用Drawable来展示的解码方案也会有一定不便利。
+另外，从兼容性考虑，使用影响最小的View层级关闭硬件加速的话，就需要使用自定义View，跟可以支持使用Drawable来展示的解码方案比较，也会有一定不便利。
 
 示例Demo:
 

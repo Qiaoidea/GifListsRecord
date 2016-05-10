@@ -23,6 +23,7 @@ import me.qiao.gifcard.ui.holder.GifDecoderDrawableHolder;
 import me.qiao.gifcard.ui.holder.GifDecoderHolder;
 import me.qiao.gifcard.ui.holder.GifMovie0Holder;
 import me.qiao.gifcard.ui.holder.GifMovie1Holder;
+import me.qiao.gifcard.ui.holder.GlideDecoderHolder;
 import me.qiao.gifcard.ui.holder.QViewHolder;
 
 /**
@@ -71,8 +72,10 @@ public class GifListFragment extends Fragment{
                         return new GifDecoder1Holder(getContext());
                     case 5:
                         return new GifDecoder2Holder(getContext());
-                    default:
+                    case 6:
                         return new GifDecoderDrawableHolder(getContext());
+                    default:
+                        return new GlideDecoderHolder(getContext());
                 }
             }
 

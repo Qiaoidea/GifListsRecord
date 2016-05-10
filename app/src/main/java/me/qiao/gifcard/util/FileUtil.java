@@ -15,6 +15,22 @@ import java.io.OutputStream;
  */
 public class FileUtil {
 
+    public static byte[] inputStreamToBytes(InputStream is) {
+        final int bufferSize = 16384;
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream(bufferSize);
+        try {
+            int nRead;
+            byte[] data = new byte[bufferSize];
+            while ((nRead = is.read(data)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+            buffer.flush();
+        } catch (IOException e) {
+            return null;
+        }
+        return buffer.toByteArray();
+    }
+
     public static byte[] readFileToByteArray(File file) throws IOException {
         FileInputStream in = null;
 
@@ -79,8 +95,6 @@ public class FileUtil {
                 closeable.close();
             }
         } catch (IOException var2) {
-            ;
         }
-
     }
 }

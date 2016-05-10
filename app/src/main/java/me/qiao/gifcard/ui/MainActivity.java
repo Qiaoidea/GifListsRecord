@@ -1,9 +1,14 @@
 package me.qiao.gifcard.ui;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -27,7 +32,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(this);
+    }
 
+    public static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 0x01;
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
+        }else{
+            addFragment();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission Granted
+            } else {
+                addFragment();
+            }
+        }
+    }
+
+    private void addFragment(){
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container,
                         Fragment.instantiate(this,CardListFragment.class.getName()))
@@ -63,6 +97,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bundle.putInt("type",4);
         }else if(id == R.id.action_decoder2){
             bundle.putInt("type",5);
+        }else if(id == R.id.action_animdrawable_decoder){
+            bundle.putInt("type",6);
+        }else if(id == R.id.action_glide) {
+            bundle.putInt("type", -1);
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.addToBackStack(null);

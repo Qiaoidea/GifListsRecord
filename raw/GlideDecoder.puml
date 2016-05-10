@@ -1,0 +1,94 @@
+@startuml
+
+interface FrameCallback {
+    + onFrameReady() : void
+}
+GifFrameLoader  o- "many" FrameCallback
+
+class GifState{
+    context : Context
+    bitmapPool : BitmapPool
+    gifFrameLoader : GifFrameLoader
+
+    + newDrawable() : Drawable
+    + newDrawable(Resources res) : Drawable
+}
+GifState *-- GifFrameLoader
+
+class GifFrameLoader{
+    - firstBitmap : Bitmap
+    - gifDecoder : GifDecoder
+    - callbacks : List<FrameCallback>
+    - handler : Handler
+    - requestBuilder : RequestBuilder<Bitmap>
+    + getFrameCount() : int
+    + getLoopCount() : int
+    + start() : void
+    + stop() : void
+    + getFirstFrame() : Bitmap
+    + loadNextFrame() : void
+    # onFrameReady() : void
+    # subscribe(FrameCallback frameCallback) : void
+    # unsubscribe(FrameCallback frameCallback) : void
+    - recycleFirstFrame() : void
+}
+FrameLoaderCallback --* GifFrameLoader
+class FrameLoaderCallback {
+    ..Handler.Callback..
+    + handleMessage(Message msg):boolean
+}
+
+class RequestBuilder {
+    .. request..
+    + apply(RequestOption requestOptions) : RequestBuilder
+    + load(Object obj) : RequestBuilder
+    + into(T target)
+}
+note right: 1.GifFrameLoader 调用loadNextFram()：\n\n通过构建一个Request发起异步任务，解码获取下一帧。\n然后使用handler.sendToTarget调用FrameLoaderCallback\n(Handler.Callback)回调,handleMessage，\n最终OnFrameReady()，更新新drawable
+
+class GifDrawable{
+    - paint : Paint
+    - destRect : Rect
+    - isVisible : boolean
+    - isRunning : boolean
+    - isRecycled : boolean
+    - isStarted : boolean
+    - loopCount : int
+    + start() : void
+    +  stop() : void
+    + setVisible() : void
+    + resetLoopCount() : void
+}
+FrameCallback <|-- GifDrawable
+GifState -* GifDrawable
+
+class GifDecoder{
+    - header : GifHeader
+    - parser : GifHeaderParser
+    - bitmapProvider : BitmapProvider
+    + getData() : ByteBuffer
+    + advance() : void
+    + getDelay(int n) : int
+    + getNextDelay() : int
+    + getNextFrame() : Bitmap
+    + read(InputStream is, int contentLength) : int
+    + setPixels(GifFrame currentFrame, GifFrame previousFrame) : void
+    + averageColorsNear(int positionInMainPixels, int maxPositionInMainPixels,int currentFrameIw) : void
+    + decodeBitmapData(GifFrame frame) : void
+    + getNextBitmap() : Bitmap
+    + clear() : void
+}
+GifDecoder -* GifFrameLoader
+BitmapProvider --* GifDecoder
+
+interface BitmapProvider{
+    + obtain(int width, int height, Bitmap.Config config) : Bitmap
+    + release(Bitmap bitmap) : void
+    + obtainByteArray(int size) : byte[]
+    + release(byte[] bytes) : void
+    + obtainIntArray(int size) : int[]
+    + release(int[] array) : void
+}
+XXXBitmapProvider -|> BitmapProvider
+
+@enduml

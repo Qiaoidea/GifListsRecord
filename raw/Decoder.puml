@@ -1,0 +1,74 @@
+@startuml
+
+title 售票机控制程序
+
+scale 1500 width
+Component <|-- Keyboard : 继承关系
+Component <|-- Screen
+Component <|-- CardDriver
+Component <|-- CashSlot
+Component <|-- Printer
+Keyboard <|-- ActionKeyboard
+Keyboard <|-- TicketKindKeyboard
+Keyboard <|-- DestinationKeyboard
+
+ActionKeyboard <--* TicketSoldSystem : 组合关系
+TicketKindKeyboard <--* TicketSoldSystem
+DestinationKeyboard <--* TicketSoldSystem
+Screen <--* TicketSoldSystem
+CardDriver <--* TicketSoldSystem
+CashSlot <--* TicketSoldSystem
+Printer <--* TicketSoldSystem
+
+skinparam classAttributeIconSize 0
+
+note top of Component : 抽象部件类，所有部件类的父类
+note left of Keyboard : 键盘抽象类
+class Component {
+ +init():void
+ +doSelfTest():void
+}
+class Keyboard {
+ +getSelectedKey():int
+}
+
+class Screen {
+ +showText():void
+}
+class CardDriver {
+ +getCredit():String
+ +debitFare():double
+ +ejectMCard():void
+}
+class CashSlot {
+ +getCash():String
+}
+class Printer {
+ +printTicket():void
+ +ejectTicket():void
+}
+class ActionKeyboard {
+ +getAction():int
+}
+class TicketKindKeyboard {
+ +getTicketKind():String
+}
+class DestinationKeyboard {
+ +getDestinationCode():String
+}
+class TicketSoldSystem {
+ +verifyCredit():boolean
+ +calculateFare():double
+}
+
+note as Comment
+  <color:royalBlue>(1) 目的地键盘用来输入行程目的地的代码（例如，200表示总站）。</color>
+  (2) 乘客可以通过车票键盘选择车票种类（单程票、多次往返票和座席种类）。
+  (3) 继续/取消键盘上的取消按钮用于取消购票过程，继续按钮允许乘客连续购买多张票。
+  (4) 显示屏显示所有的系统输出和用户提示信息。
+  (5) 插卡口接受MCard（现金卡），硬币口和纸币槽接受现金。
+  (6) 打印机用于输出车票。
+  (7) 所有部件均可实现自检并恢复到初始状态。
+end note
+
+@enduml

@@ -20,6 +20,14 @@
 		<attr name="gifViewStyle" format="reference" />
 	</declare-styleable>
 
+	<declare-styleable name="GifTextureView">
+		<attr name="gifSource" format="reference|string"/>
+		<attr name="isOpaque" format="boolean"/>
+	</declare-styleable>
+	<declare-styleable name="GifDrawable">
+		<attr name="freeAnimation" format="boolean"/>
+	</declare-styleable>
+
 	<style name="Widget.GifView" parent="@android:style/Widget"></style>
 </resources>
 

@@ -1,0 +1,38 @@
+@startuml
+
+class GifView{
+   - mMovie : Movie
+   - mMovieStart : long
+   - mCurrentAnimationTime : int
+   - isPaused : boolean
+
+   + setMovie(Movie movie) : void
+   + setFile(File file) : void
+   + setInputStream(InputStream ins) : void
+   + onMeasure(int widthMeasureSpec, int heightMeasureSpec) : void
+   + updateAnimationTime() : void
+   + drawMovieFrame(Canvas canvas) : void
+}
+note top: 1.使用setFile/setInputStream来设置Movie的数据流；\n2.onMeasure()时根据movie.width()/height()来确定是否缩放；\n3.如果未暂停，则计算当前动画时间 curr = time % movie.durduration();\n4.movie.setTime()并且canvas.scale()缩放后绘制movie.draw()
+
+GifView o- Movie
+class Movie{
+ - mNativeMovie
+
+ + width() : int
+ + height() : int
+ + decodeStream(InputStream is) : void
+ + decodeFile(String pathName) : void
+ + setTime(int relativeMilliseconds) : boolean
+ + draw(Canvas canvas, float x, float y, Paint paint) : void
+}
+Movie <|-- Native.Movie
+
+class Native.Movie{
+ + movie_duration(JNIEnv* env, jobject movie) : int
+ + movie_setTime(JNIEnv* env, jobject movie, int ms) : boolean
+ + movie_draw(JNIEnv* env, jobject movie, jobject canvas,jfloat fx, jfloat fy, jobject jpaint) : void
+ + movie_decodeStream(JNIEnv* env, jobject clazz, jobject istream) : object
+}
+
+@enduml

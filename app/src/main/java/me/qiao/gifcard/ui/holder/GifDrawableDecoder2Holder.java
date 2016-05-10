@@ -8,19 +8,18 @@ import java.io.File;
 import java.io.IOException;
 
 import me.qiao.gifcard.util.FileUtil;
-import me.qiao.giflib.decoder.lib2.GifDrawable;
+import me.qiao.giflib.decoder.lib2.GifImageView;
 
 /**
  * Created by Qiao on 2016/5/5.
  * function：
  */
-public class GifDecoder2Holder extends QViewHolder<File>{
-    ImageView imageView;
-    GifDrawable gifDrawable;
+public class GifDrawableDecoder2Holder extends QViewHolder<File>{
+    GifImageView imageView;
 
-    public GifDecoder2Holder(Context context) {
-        super(new ImageView(context));
-        imageView = (ImageView)itemView;
+    public GifDrawableDecoder2Holder(Context context) {
+        super(new GifImageView(context));
+        imageView = (GifImageView)itemView;
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         imageView.setPadding(10, 10, 10, 10);
         imageView.setMinimumHeight(400);
@@ -32,18 +31,16 @@ public class GifDecoder2Holder extends QViewHolder<File>{
     @Override
     public void bindViewHolder(File data) {
         super.bindViewHolder(data);
-        if(gifDrawable!=null){
-            gifDrawable.clear();
-        }
+        imageView.clear();
     }
 
     @Override
     public void bindData(){
         try {
-            imageView.setImageDrawable(
-                    gifDrawable = new GifDrawable(FileUtil.readFileToByteArray(mData))
+            imageView.setBytes(
+                    FileUtil.readFileToByteArray(mData)
             );
-            gifDrawable.startAnimation();
+            imageView.startAnimation();
         } catch (IOException e) {
             e.printStackTrace();
         }

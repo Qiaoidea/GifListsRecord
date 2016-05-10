@@ -1,0 +1,123 @@
+@startuml
+
+note as Comment
+  (1) GifDrawable 实现了多媒体媒体/动画接口，达到播放暂停等功能，通过定时刷新任务和绘制更新视图。
+  (2) InvalidationHandler持有一个GifDrawable弱引用，接收消息指令并重绘drawable。
+  (3) ScheduledThreadPoolExecutor管理和调度定时任务RenderTask，通过InvalidationHandler发送重绘指令。
+  (4) InvalidationHandler管理gif文件数据流，通过native C的底层接口实现对gif的各种操作。
+  (5) Transform是gifDrawable提供的变化接口。
+  (6) control用于管理gif文件的解码转换等，同时提供seetTo跳转和获取帧数等功能。
+end note
+
+interface Animatable{
+    +start() : void
+    +stop() : void
+    +isRunning() : boolean
+}
+
+interface MediaPlayerControl {
+    +start() : void
+    +pause() : void
+    +getDuration() : int
+    +getCurrentPosition() : int
+    +seekTo(int pos) : void
+    +isPlaying() : boolean
+    +getBufferPercentage() :int
+    +canPause() : boolean
+    +canSeekBackward() : boolean
+    +canSeekForward() : boolean
+    +getAudioSessionId() : int
+}
+
+MediaPlayerControl <|-- GifDrawable
+Animatable <|-- GifDrawable
+
+interface Transform{
+    +onBoundsChange(Rect bounds) : void
+	+onDraw(Canvas canvas, Paint paint, Bitmap buffer) : void
+}
+Transform --* GifDrawable
+
+
+CornerRadiusTransform --|> Transform
+class CornerRadiusTransform{
+  - mCornerRadius : float
+  - mShader : Shader
+  - RectF mDstRectF
+
+  + getCornerRadius() : float
+  + setCornerRadius(@FloatRange(from = 0) float cornerRadius) : void
+}
+
+ScheduledThreadPoolExecutor <|- GifRenderingExecutor
+class GifRenderingExecutor{
+    -{static} instance : GifRenderingExecutor
+    +{static} getInstance() : GifRenderingExecutor
+}
+GifDrawable *- ScheduledThreadPoolExecutor
+
+Ruannable <|- SafeRunnable
+class SafeRunnable{
+   # mGifDrawable : GifDrawable
+   + run() : void
+}
+SafeRunnable o-- GifDrawable
+
+SafeRunnable <|- RenderTask
+class RenderTask{
+}
+GifDrawable o-- RenderTask
+
+Handler <|-- InvalidationHandler
+class InvalidationHandler{
+  # {static}MSG_TYPE_INVALIDATION : int
+  - WeakReference<GifDrawable> : mDrawableRef
+  + handleMessage
+}
+GifDrawable *-- InvalidationHandler
+
+class GifDrawable{
+  # mExecutor : ScheduledThreadPoolExecutor
+  # mRenderTask : RenderTask
+  # mInvalidationHandler : InvalidationHandler
+  - mTransform : Transform
+
+  + recycle() : void
+  + isRecycle() : boolean
+
+  +getNumberOfFrames() : int
+  +getLoopCount() : int
+
+  +getCurrentFrame() : Bitmap
+  +draw() : void
+}
+
+class GifInfoHandle{
+    + {static}GifInfoHandle openUri(ContentResolver resolver, Uri uri, boolean justDecodeMetaData)
+    ..native..
+    #openFd(FileDescriptor fd, long offset, boolean justDecodeMetaData)
+    #openByteArray(byte[] bytes, boolean justDecodeMetaData)
+    #openDirectByteBuffer(ByteBuffer buffer, boolean justDecodeMetaData)
+    #openStream(InputStream stream, boolean justDecodeMetaData)
+    #openFile(String filePath, boolean justDecodeMetaData)
+}
+GifInfoHandle ..* GifDrawable
+
+class Native.control{
+    + {static}reset(JNIEnv *__unused  env, jclass  __unused class, jlong gifInfo)
+    + {static}setSpeedFactor(JNIEnv __unused *env, jclass __unused handleClass, jlong gifInfo, jfloat factor)
+    + {static}seekToTime(JNIEnv *env, jclass __unused handleClass, jlong gifInfo, jint desiredPos, jobject jbitmap)
+    + {static}seekToFrame(JNIEnv *env, jclass __unused handleClass, jlong gifInfo, jint desiredIndex, jobject jbitmap)
+    + {static}saveRemainder(JNIEnv *__unused  env, jclass __unused handleClass, jlong gifInfo)
+    + {static}restoreRemainder(JNIEnv *__unused env, jclass __unused handleClass, jlong gifInfo)
+}
+GifInfoHandle <|.. Native.control
+
+class LibraryLoader{
+    + getContext()
+    + loadLibrary(Context context, final String library) : void
+}
+Native.control . LibraryLoader
+LibraryLoader . GifInfoHandle
+
+@enduml

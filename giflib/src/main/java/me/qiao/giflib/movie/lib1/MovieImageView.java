@@ -66,19 +66,13 @@ public class MovieImageView extends ImageView {
 		initGifAndImageView();
 	}
 
-	private void prepareForMovie(boolean isToDo) {
-		if (FEATURE_IS_GIF_SUPPORTED && isToDo) {
-			if (getLayerType() != View.LAYER_TYPE_SOFTWARE) {
-				setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-			}
-			setWillNotCacheDrawing(false);
-			mMovieStartTime = 0;
-		} else {
-			if (mDefLayerType != 0 && mDefLayerType != getLayerType()) {
-				setLayerType(mDefLayerType, null);
-			}
-			mMovie = null;
+	private void initGifAndImageView() {
+		Log("initGifAndImageView");
+		if (FEATURE_IS_GIF_SUPPORTED) {
+			mMatrix = new Matrix();
+			mDefLayerType = getLayerType();
 		}
+		mAdjustViewBoundsCompat = this.getContext().getApplicationInfo().targetSdkVersion <= Build.VERSION_CODES.JELLY_BEAN_MR1;
 	}
 
 	public void setGifFile(File file){
@@ -88,7 +82,7 @@ public class MovieImageView extends ImageView {
 	/**
 	 * You may open an inputstream of certain GIF file, and then decode by
 	 * Movie.decodeStream.
-	 * 
+	 *
 	 * @param movie
 	 */
 	public void setMovie(Movie movie) {
@@ -104,23 +98,6 @@ public class MovieImageView extends ImageView {
 			}
 			invalidate();
 		}
-	}
-
-	private void syncParentParameter() {
-		Log("syncParentParameter");
-		mSuperPaddingTop = getPaddingTop();
-		mSuperPaddingLeft = getPaddingLeft();
-		mSuperPaddingRight = getPaddingRight();
-		mSuperPaddingBottom = getPaddingBottom();
-		mSuperScaleType = getScaleType();
-		mSuperDrawMatrix = getImageMatrix();
-
-		Log("====syncParentParameter====");
-		Log("Padding: Top/Left/Right/Botton=[" + mSuperPaddingTop + "/" + mSuperPaddingLeft + "/" + mSuperPaddingRight
-				+ "/" + mSuperPaddingBottom + "]");
-		Log("ScaleType: " + mSuperScaleType);
-		Log("DrawMatrix: " + mSuperDrawMatrix);
-		Log("===========================");
 	}
 
 	@Override
@@ -147,11 +124,25 @@ public class MovieImageView extends ImageView {
 		super.setImageURI(uri);
 	}
 
+	private void prepareForMovie(boolean isToDo) {
+		if (FEATURE_IS_GIF_SUPPORTED && isToDo) {
+			if (getLayerType() != View.LAYER_TYPE_SOFTWARE) {
+				setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+			}
+			setWillNotCacheDrawing(false);
+			mMovieStartTime = 0;
+		} else {
+			if (mDefLayerType != 0 && mDefLayerType != getLayerType()) {
+				setLayerType(mDefLayerType, null);
+			}
+			mMovie = null;
+		}
+	}
+
 	@Override
-	public void setScaleType(ScaleType scaleType) {
-		Log("setScaleType  scaleType=" + scaleType);
-		super.setScaleType(scaleType);
-		// configureDrawMatrix();//yeqi.zhang@20131030
+	public void setPadding(int left, int top, int right, int bottom) {
+		super.setPadding(left, top, right, bottom);
+		this.requestLayout();
 	}
 
 	@Override
@@ -160,9 +151,6 @@ public class MovieImageView extends ImageView {
 		// We should do the following whether we are in "MovieMode" or not,
 		// because we can not get the matrix from
 		// parent later.
-		if (matrix != null && matrix.isIdentity()) {
-			matrix = null;
-		}
 		if (matrix == null && !mMatrix.isIdentity() || matrix != null && !mMatrix.equals(matrix)) {
 			mMatrix.set(matrix);
 			configureDrawMatrix();
@@ -171,19 +159,12 @@ public class MovieImageView extends ImageView {
 	}
 
 	@Override
-	public void setPadding(int left, int top, int right, int bottom) {
-		super.setPadding(left, top, right, bottom);
-		// configureDrawMatrix();
-		this.requestLayout();
-	}
-
-	private void initGifAndImageView() {
-		Log("initGifAndImageView");
-		if (FEATURE_IS_GIF_SUPPORTED) {
-			mMatrix = new Matrix();
-			mDefLayerType = getLayerType();
-		}
-		mAdjustViewBoundsCompat = this.getContext().getApplicationInfo().targetSdkVersion <= Build.VERSION_CODES.JELLY_BEAN_MR1;
+	protected boolean setFrame(int l, int t, int r, int b) {
+		Log("setFrame");
+		boolean changed = super.setFrame(l, t, r, b);
+		mHasFrame = true;
+		configureDrawMatrix();
+		return changed;
 	}
 
 	private void configureDrawMatrix() {
@@ -218,7 +199,7 @@ public class MovieImageView extends ImageView {
 			mDrawMatrix.setScale(scale, scale);
 			mDrawMatrix.postTranslate((int) (dx + 0.5f), (int) (dy + 0.5f));
 
-			Log("CENTER_CROP : scale=" + scale + ", dx=" + dx + ", dy=" + dy, DB_DETAIL);
+			Log("CENTER_CROP : scale=" + scale + ", dx=" + dx + ", dy=" + dy);
 
 		} else if (ScaleType.CENTER_INSIDE == mSuperScaleType) {
 
@@ -234,7 +215,7 @@ public class MovieImageView extends ImageView {
 			mDrawMatrix.setScale(scale, scale);
 			mDrawMatrix.postTranslate(dx, dy);
 
-			Log("CENTER_INSIDE : scale=" + scale + ", dx=" + dx + ", dy=" + dy, DB_DETAIL);
+			Log("CENTER_INSIDE : scale=" + scale + ", dx=" + dx + ", dy=" + dy);
 
 		} else if (ScaleType.FIT_XY == mSuperScaleType) {
 
@@ -273,42 +254,31 @@ public class MovieImageView extends ImageView {
 		}
 	}
 
-	@Override
-	protected boolean setFrame(int l, int t, int r, int b) {
-		Log("setFrame");
-		boolean changed = super.setFrame(l, t, r, b);
-		mHasFrame = true;
-		configureDrawMatrix();
-		return changed;
+	private void syncParentParameter() {
+		Log("syncParentParameter");
+		mSuperPaddingTop = getPaddingTop();
+		mSuperPaddingLeft = getPaddingLeft();
+		mSuperPaddingRight = getPaddingRight();
+		mSuperPaddingBottom = getPaddingBottom();
+		mSuperScaleType = getScaleType();
+		mSuperDrawMatrix = getImageMatrix();
+
+		Log("====syncParentParameter====");
+		Log("Padding: Top/Left/Right/Botton=[" + mSuperPaddingTop + "/" + mSuperPaddingLeft + "/" + mSuperPaddingRight
+				+ "/" + mSuperPaddingBottom + "]");
+		Log("ScaleType: " + mSuperScaleType);
+		Log("DrawMatrix: " + mSuperDrawMatrix);
+		Log("===========================");
 	}
 
-	private int resolveAdjustedSize(int desiredSize, int maxSize, int measureSpec) {
-		Log("resolveAdjustedSize, desiredSize=" + desiredSize + ",maxSize=" + maxSize + ",measureSpec=" + measureSpec,
-				DB_DETAIL);
-		int result = desiredSize;
-		int specMode = MeasureSpec.getMode(measureSpec);
-		int specSize = MeasureSpec.getSize(measureSpec);
-		switch (specMode) {
-		case MeasureSpec.UNSPECIFIED:
-			/*
-			 * Parent says we can be as big as we want. Just don't be larger
-			 * than max size imposed on ourselves.
-			 */
-			result = Math.min(desiredSize, maxSize);
-			break;
-		case MeasureSpec.AT_MOST:
-			// Parent says we can be as big as we want, up to specSize.
-			// Don't be larger than specSize, and don't be larger than
-			// the max size imposed on ourselves.
-			result = Math.min(Math.min(desiredSize, specSize), maxSize);
-			break;
-		case MeasureSpec.EXACTLY:
-			// "60dp"
-			// No choice. Do what we are told.
-			result = specSize;
-			break;
+	@Override
+	public void setWillNotCacheDrawing(boolean willNotCacheDrawing) {
+		Log("setWillNotCacheDrawing,  willNotCacheDrawing=" + willNotCacheDrawing);
+		if (FEATURE_IS_GIF_SUPPORTED && mMovie != null) {
+			super.setWillNotCacheDrawing(false);
+		} else {
+			super.setWillNotCacheDrawing(willNotCacheDrawing);
 		}
-		return result;
 	}
 
 	@Override
@@ -440,6 +410,34 @@ public class MovieImageView extends ImageView {
 		setMeasuredDimension(widthSize, heightSize);
 	}
 
+	private int resolveAdjustedSize(int desiredSize, int maxSize, int measureSpec) {
+		Log("resolveAdjustedSize, desiredSize=" + desiredSize + ",maxSize=" + maxSize + ",measureSpec=" + measureSpec);
+		int result = desiredSize;
+		int specMode = MeasureSpec.getMode(measureSpec);
+		int specSize = MeasureSpec.getSize(measureSpec);
+		switch (specMode) {
+			case MeasureSpec.UNSPECIFIED:
+			/*
+			 * Parent says we can be as big as we want. Just don't be larger
+			 * than max size imposed on ourselves.
+			 */
+				result = Math.min(desiredSize, maxSize);
+				break;
+			case MeasureSpec.AT_MOST:
+				// Parent says we can be as big as we want, up to specSize.
+				// Don't be larger than specSize, and don't be larger than
+				// the max size imposed on ourselves.
+				result = Math.min(Math.min(desiredSize, specSize), maxSize);
+				break;
+			case MeasureSpec.EXACTLY:
+				// "60dp"
+				// No choice. Do what we are told.
+				result = specSize;
+				break;
+		}
+		return result;
+	}
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 
@@ -464,7 +462,7 @@ public class MovieImageView extends ImageView {
 		canvas.save();
 
 		boolean superCropToPadding = getCropToPadding();
-		Log("superCropToPadding = " + superCropToPadding, false);
+		Log("superCropToPadding = " + superCropToPadding);
 		if (superCropToPadding) {
 			int superScrollX = getScrollX();
 			int superScrollY = getScrollY();
@@ -490,24 +488,8 @@ public class MovieImageView extends ImageView {
 		invalidate();
 	}
 
-	@Override
-	public void setWillNotCacheDrawing(boolean willNotCacheDrawing) {
-		Log("setWillNotCacheDrawing,  willNotCacheDrawing=" + willNotCacheDrawing);
-		if (FEATURE_IS_GIF_SUPPORTED && mMovie != null) {
-			super.setWillNotCacheDrawing(false);
-		} else {
-			super.setWillNotCacheDrawing(willNotCacheDrawing);
-		}
-	}
-
 	private static void Log(String log) {
 		if (DB) {
-			Log.i(DB_TAG, log);
-		}
-	}
-
-	private static void Log(String log, boolean enable) {
-		if (enable) {
 			Log.i(DB_TAG, log);
 		}
 	}
