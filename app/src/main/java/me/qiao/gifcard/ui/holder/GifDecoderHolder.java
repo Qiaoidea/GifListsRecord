@@ -31,7 +31,6 @@ public class GifDecoderHolder extends QViewHolder<File> {
     public void bindViewHolder(File data) {
         super.bindViewHolder(data);
         ((ImageView)itemView).setImageDrawable(null);
-//        ((ImageView)itemView).setImageBitmap(BitmapFactory.decodeFile(data.getAbsolutePath()));
     }
 
     @Override

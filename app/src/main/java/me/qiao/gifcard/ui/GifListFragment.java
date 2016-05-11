@@ -45,7 +45,7 @@ public class GifListFragment extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRcyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
+        mRcyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 //        mRcyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRcyclerView.setHasFixedSize(true);
     }

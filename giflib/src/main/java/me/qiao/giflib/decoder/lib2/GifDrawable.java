@@ -196,21 +196,16 @@ public class GifDrawable extends Drawable implements Runnable{
         return super.isStateful() || (mTint != null && mTint.isStateful());
     }
 
-//    @Override
-//    public boolean setVisible(boolean visible, boolean restart) {
-//        final boolean changed = super.setVisible(visible, restart);
-//        if (visible) {
-//            if (restart) {
-//                reset();
-//            }
-//            if (changed) {
-//                start();
-//            }
-//        } else if (changed) {
-//            stop();
-//        }
-//        return changed;
-//    }
+    @Override
+    public boolean setVisible(boolean visible, boolean restart) {
+        final boolean changed = super.setVisible(visible, restart);
+        if (!visible) {
+            stopAnimation();
+        } else if (animating) {
+            startAnimation();
+        }
+        return changed;
+    }
 
     @Override
     public void draw(Canvas canvas) {
@@ -221,10 +216,8 @@ public class GifDrawable extends Drawable implements Runnable{
         } else {
             clearColorFilter = false;
         }
-        Log.i("GifDrawable_draw", " draw bitmap......");
         if(tmpBitmap!=null) {
             canvas.drawBitmap(tmpBitmap, mSrcRect, mDstRect, mPaint);
-            Log.i("GifDrawable_draw", " finished..");
         }
         if (clearColorFilter) {
             mPaint.setColorFilter(null);

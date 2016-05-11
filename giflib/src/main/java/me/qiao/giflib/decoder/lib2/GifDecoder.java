@@ -197,6 +197,7 @@ class GifDecoder {
 
   GifDecoder() {
     this(new SimpleBitmapProvider());
+//    this(new GifBitmapProvider(QInstance.getBitmapPool(),QInstance.getArrayPool()));
   }
 
   int getWidth() {

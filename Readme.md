@@ -158,7 +158,7 @@ getFrame()
 　　解码过程在读取数据并添加像素至Bitmap过程中有一定内存开销，定义GifHeader/Parser/GifFrame等对象及Drawable/View,文件大约30k;
 - Native解码
 　　因为提供一套java+c方案，一方面需要java和c同时定义gif/header/bitmap等对象，用以传递数据对象，另外，为兼容ImageView/Drawable/textureView 等方案，在针对多平台手机架构时Native C会编译多个.so,导致整体文件体系相对较大。这里只取
- *java文件(66.3kb)* 以及 *armeabi(46.7kb)* 和 *armeabi-v7a(44.2kb)* 两种架构，大小已经达到150kb。如果仅保留对于gif支持的 drawable 等相关文件，大小可以进一步压缩精简，差不多控制在80k以内。（参照类图精简）
+ *java文件(59.6kb)* 以及 *armeabi(37.3kb)* 和 *armeabi-v7a(29.2kb)* 两种架构，大小已经达到120kb。如果仅保留对于gif支持的 drawable 等相关文件，大小可以进一步压缩精简，差不多控制在80k以内。（参照类图精简）
 
 　　需要补充的是，上述Native 解码方案(android-gif-drawable)，有在java层封装了一套线程调度与界面（帧）刷新的逻辑，用以管理播放动画的暂停继续等控制操作，而Movie方案只是简单的循环读movie结点输出，至于glide的一套Request异步方案，涉及到缓存管理和线程调度较为复杂，更注重的是两级缓存和图片加载，抽取的示例只是简单使用runnable来定时更新，因此移植性稍差，需要进一步提取封装。
 
