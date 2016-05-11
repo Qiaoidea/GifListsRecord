@@ -1,5 +1,6 @@
 package me.qiao.giflib.movie.lib1;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,11 +15,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
-
+@TargetApi(16)
 public class MovieImageView extends ImageView {
 
 	private static final boolean DB = false;

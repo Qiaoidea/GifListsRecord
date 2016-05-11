@@ -18,6 +18,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
@@ -128,9 +131,7 @@ public class CardListFragment extends Fragment implements SwipeRefreshLayout.OnR
                             return new RecyclerView.ViewHolder(footer = new PacmanFooter(getContext())){};
 //                        case ITEM:
                         default:
-                            return new ItemViewHolder(
-                                    LayoutInflater.from(getContext())
-                                            .inflate(R.layout.gifs_item_layout,parent,false));
+                            return new ItemViewHolder(parent);
                     }
                 }
 
@@ -139,7 +140,8 @@ public class CardListFragment extends Fragment implements SwipeRefreshLayout.OnR
                     if(holder instanceof ItemViewHolder){
                         final GifBean bean = mData.get(position);
                         final ItemViewHolder qViewHolder = (ItemViewHolder)holder;
-                        qViewHolder.textView.setText(bean.getDesc());
+                        qViewHolder.desc.setText(bean.getDesc());
+                        qViewHolder.info.setText("");
                         qViewHolder.imageView.setImageResource(R.mipmap.ic_launcher);
                     }else{
                         footer.startAnim();
@@ -197,6 +199,24 @@ public class CardListFragment extends Fragment implements SwipeRefreshLayout.OnR
                     .asGif()
                     .placeholder(R.mipmap.ic_launcher)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .listener(new RequestListener<String, GifDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GifDrawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GifDrawable resource, String model, Target<GifDrawable> target,
+                                                       boolean isFromMemoryCache, boolean isFirstResource) {
+                            qViewHolder.info.setText(
+                                    String.format("尺寸: %dx%d , 大小: %2fMB , 帧数: %d",
+                                            resource.getDecoder().getWidth(),
+                                            resource.getDecoder().getHeight(),
+                                            resource.getData().length/1024f/1024,
+                                            resource.getFrameCount()));
+                            return false;
+                        }
+                    })
                     .into(qViewHolder.imageView);
             Log.i("loadUrl.... ", bean.getUrl());
         }
@@ -234,12 +254,15 @@ public class CardListFragment extends Fragment implements SwipeRefreshLayout.OnR
      */
     private class ItemViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
-        TextView textView;
+        TextView info;
+        TextView desc;
 
-        ItemViewHolder(View view){
-            super(view);
+        ItemViewHolder(ViewGroup parent){
+            super(LayoutInflater.from(getContext())
+                    .inflate(R.layout.gifs_item_layout,parent,false));
             imageView = findView(R.id.gif_img);
-            textView = findView(R.id.gif_text);
+            info = findView(R.id.txt_gifts_title);
+            desc = findView(R.id.gif_text);
         }
 
         protected <T extends View> T findView(int resId) {

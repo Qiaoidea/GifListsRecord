@@ -20,7 +20,7 @@ public class GifDrawableDecoder2Holder extends QViewHolder<File>{
     public GifDrawableDecoder2Holder(Context context) {
         super(new GifImageView(context));
         imageView = (GifImageView)itemView;
-        imageView.setScaleType(ImageView.ScaleType.CENTER);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setPadding(10, 10, 10, 10);
         imageView.setMinimumHeight(400);
         RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(

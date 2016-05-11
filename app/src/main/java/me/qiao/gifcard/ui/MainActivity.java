@@ -62,9 +62,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void addFragment(){
+        Bundle bundle = new Bundle();
+//        bundle.putInt("type",1);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container,
-                        Fragment.instantiate(this,CardListFragment.class.getName()))
+                        Fragment.instantiate(this,CardListFragment.class.getName(),bundle))
                 .commit();
     }
 

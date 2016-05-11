@@ -12,7 +12,13 @@
     <item
         android:id="@+id/action_decoder"
         android:orderInCategory="100"
-        android:title="GifByDecoder"
+        android:title="GifByNativeDecoder"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_decoder2"
+        android:orderInCategory="100"
+        android:title="GifByDecoder2"
         app:showAsAction="never" />
 
     <item
@@ -43,12 +49,6 @@
         android:id="@+id/action_animdrawable_decoder"
         android:orderInCategory="100"
         android:title="GifByAnimDrawableDecoder"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_decoder2"
-        android:orderInCategory="100"
-        android:title="GifByDecoder2"
         app:showAsAction="never" />
 
 </menu>

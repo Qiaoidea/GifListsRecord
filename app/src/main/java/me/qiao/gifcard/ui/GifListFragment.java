@@ -45,7 +45,8 @@ public class GifListFragment extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRcyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        mRcyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
+//        mRcyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRcyclerView.setHasFixedSize(true);
     }
 
@@ -72,6 +73,7 @@ public class GifListFragment extends Fragment{
                         return new GifDecoder1Holder(getContext());
                     case 5:
                         return new GifDecoder2Holder(getContext());
+//                        return new GifDrawableDecoder2Holder(getContext());
                     case 6:
                         return new GifDecoderDrawableHolder(getContext());
                     default:
