@@ -85,10 +85,13 @@
 
 #### （1）性能
 　　示例demo 以RecyclerView 作为容器分别展示list列表和grid列表样式的gif动图后，在页面稳定播放时，利用Android Monitor捕获到相关数据如下：
-
-![Glide 解码](raw/GlideMonitor.png)
-![Nativie 解码](raw/MovieMonitor.png)
-![Movie 绘制canvas](raw/NativeMonitor.png)
+<p>
+   <img src="raw/GlideMonitor.png" width="300" alt="Glide 解码"/>
+   &nbsp;&nbsp;
+   <img src="raw/MovieMonitor.png" width="285" alt="Nativie 解码"/>
+   &nbsp;&nbsp;
+   <img src="raw/NativeMonitor.png" width="250" alt="Movie 绘制canvas"/>
+</p>
 
 List 列表 (1x3)
 
