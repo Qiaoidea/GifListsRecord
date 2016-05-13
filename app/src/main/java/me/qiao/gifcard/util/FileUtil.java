@@ -71,7 +71,7 @@ public class FileUtil {
     }
 
     public static long copyLarge(InputStream input, OutputStream output) throws IOException {
-        return copyLarge(input, output, new byte[4096]);
+        return copyLarge(input, output, new byte[16384]);
     }
 
     public static long copyLarge(InputStream input, OutputStream output, byte[] buffer) throws IOException {

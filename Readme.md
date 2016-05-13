@@ -1,5 +1,10 @@
 ## ImageView 显示gif动图
 
+　　一个利用jsoup爬取在线gif并展示的Demo，主要演示播放展示gif列表动画的几种方案。
+示例效果：
+    ![demo.gif](raw/GifDemo.gif)
+
+
 　　由于Android官方的ImageView目前展示图片不支持动图Gif，这里做了一些分析和查找，列出部分实现播放gif的方案，加以比对并形成记录。
 
 ### 1.GIF文件格式
@@ -179,6 +184,14 @@ getFrame()
 > 1.经提示，Native在release版本编译下的体积会更小，所以可以考虑提供更有参考价值的文件大小比对数据。
 
 > 2.尚未考虑在全部关闭硬件加速的情况下各个方案的实际表现
+
+> 3.dumpsys info
+
+> 4.bitmap 读 定制采样率 size 高宽
+
+> 5.线程刷新控制
+
+
 
 ---
 [0]:http://blog.csdn.net/yarkey09/article/details/13022387
